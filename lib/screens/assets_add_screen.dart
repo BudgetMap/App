@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../models/asset.dart';
 import '../widgets/appbar.dart';
 import '../widgets/save_delete_builder.dart';
-import '../widgets/small_outlined_button.dart';
 
 class AssetsAddScreen extends StatefulWidget {
   const AssetsAddScreen({super.key, this.asset});

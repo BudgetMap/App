@@ -1,7 +1,6 @@
 import 'package:budget_map/models/ordered_product.dart';
 import 'package:budget_map/providers/deals_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/asset.dart';
 import '../models/deal.dart';
