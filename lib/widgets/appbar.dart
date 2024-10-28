@@ -10,6 +10,6 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
           fontFamily: Theme.of(context).textTheme.displaySmall?.fontFamily,
           fontSize: Theme.of(context).textTheme.displaySmall?.fontSize),
     ),
-    toolbarHeight: 80,
+    toolbarHeight: 60,
   );
 }

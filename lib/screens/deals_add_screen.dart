@@ -1,12 +1,14 @@
 import 'package:budget_map/models/ordered_product.dart';
+import 'package:budget_map/models/supplier.dart';
 import 'package:budget_map/providers/deals_provider.dart';
+import 'package:budget_map/widgets/save_delete_builder.dart';
+import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/asset.dart';
 import '../models/deal.dart';
 import '../widgets/appbar.dart';
 import '../widgets/dynamic_products_list.dart';
-import '../widgets/small_outlined_button.dart';
 
 class DealsAddScreen extends StatefulWidget {
   const DealsAddScreen({super.key, this.deal});
@@ -18,20 +20,37 @@ class DealsAddScreen extends StatefulWidget {
 }
 
 class _DealsAddScreenState extends State<DealsAddScreen> {
-  // TextEditingController name = TextEditingController();
-  // TextEditingController originalAmount = TextEditingController();
-  // TextEditingController consumedAmount = TextEditingController();
   Asset? selectedAsset;
-  List<OrderedProduct> list = [];
+  Supplier? selectedSupplier;
+  List<OrderedProduct> mainProducts = [];
+  List<OrderedProduct> sideProducts = [];
+  DateTime selectedDate = DateTime.now();
+  TextEditingController exchangeRate = TextEditingController();
+
+  TextStyle primaryStyle(BuildContext context) => TextStyle(
+      color: Theme.of(context).colorScheme.onSurface,
+      fontFamily: Theme.of(context).textTheme.bodyLarge?.fontFamily,
+      fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize);
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     Provider.of<DealsProvider>(context, listen: false).getAssetsAndSuppliers();
     if (widget.deal != null) {
-      // name.text = widget.asset!.name;
-      // originalAmount.text = widget.asset!.originalAmount.toString();
-      // consumedAmount.text = widget.asset!.consumedAmount.toString();
+      // Todo
     }
   }
 
@@ -42,22 +61,19 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<DealsProvider>(builder:
             (BuildContext context, DealsProvider value, Widget? child) {
-          if (!value.addDone &&
-              !value.addLoading &&
-              !value.getAssetsAndSuppliersLoading &&
-              value.getAssetsAndSuppliersDone) {
-            return Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 40.0,
-                    child: Wrap(
-                      spacing: 20,
-                      // to apply margin in the main axis of the wrap
-                      runSpacing: 20,
-                      children: [
-                        SizedBox(
-                            width: double.infinity,
-                            child: DropdownButton<Asset>(
+          if (checkReady(value)) {
+            selectedSupplier=value.suppliers[0];
+            selectedAsset=value.assets[0];
+            return SingleChildScrollView(
+                child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width - 40.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Select Asset", style: primaryStyle(context)),
+                            DropdownButton<Asset>(
                               isExpanded: true,
                               value: value.assets[0],
                               icon: Icon(Icons.arrow_downward,
@@ -84,79 +100,101 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                                   child: Text(asset.name),
                                 );
                               }).toList(),
-                            )),
-                        DynamicProductsList(list: list),
-                        // TextField(
-                        //   controller: name,
-                        //   decoration: const InputDecoration(
-                        //     filled: true,
-                        //     hintText: "Name",
-                        //   ),
-                        // ),
-                        // TextField(
-                        //   controller: originalAmount,
-                        //   keyboardType: TextInputType.number,
-                        //   inputFormatters: <TextInputFormatter>[
-                        //     FilteringTextInputFormatter.digitsOnly
-                        //   ],
-                        //   decoration: const InputDecoration(
-                        //       filled: true, hintText: "Original Amount"),
-                        // ),
-                        // TextField(
-                        //   controller: consumedAmount,
-                        //   keyboardType: TextInputType.number,
-                        //   inputFormatters: <TextInputFormatter>[
-                        //     FilteringTextInputFormatter.digitsOnly
-                        //   ],
-                        //   decoration: const InputDecoration(
-                        //       filled: true, hintText: "Consumed Amount"),
-                        // ),
-                        Builder(builder: (BuildContext context) {
-                          if (widget.deal == null) {
-                            return buildSmallOutlinedButton(
-                              context: context,
-                              text: 'Save',
-                              onPress: () {
-                                // Provider.of<DealsProvider>(context,
-                                //         listen: false)
-                                //     .addDeal(Deal(
-                                //         name: name.text,
-                                //         originalAmount:
-                                //             int.parse(originalAmount.text),
-                                //         consumedAmount:
-                                //             int.parse(consumedAmount.text)));
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text("Select Supplier",
+                                style: primaryStyle(context)),
+                            DropdownButton<Supplier>(
+                              isExpanded: true,
+                              value: value.suppliers[0],
+                              icon: Icon(Icons.arrow_downward,
+                                  color: Theme.of(context).colorScheme.primary),
+                              elevation: 16,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer),
+                              underline: Container(
+                                height: 2,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                              ),
+                              onChanged: (Supplier? selection) {
+                                // This is called when the user selects an item.
+                                selectedSupplier = selection;
                               },
-                            );
-                          } else {
-                            return Row(
+                              items: value.suppliers
+                                  .map<DropdownMenuItem<Supplier>>(
+                                      (Supplier supplier) {
+                                return DropdownMenuItem<Supplier>(
+                                  value: supplier,
+                                  child: Text(supplier.name),
+                                );
+                              }).toList(),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text("Select Date", style: primaryStyle(context)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Expanded(
-                                    child: buildSmallOutlinedButton(
-                                  color: Theme.of(context).colorScheme.error,
-                                  onColor:
-                                      Theme.of(context).colorScheme.onError,
-                                  context: context,
-                                  text: 'Delete',
-                                  onPress: () {
-                                    // Todo
-                                  },
-                                )),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                    child: buildSmallOutlinedButton(
-                                  context: context,
-                                  text: 'Save',
-                                  onPress: () {
-                                    // Todo
-                                  },
-                                ))
+                                Text("${selectedDate.toLocal()}".split(' ')[0]),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => _selectDate(context),
+                                  child: const Text('Select date'),
+                                ),
                               ],
-                            );
-                            // }
-                          }
-                        })
-                      ],
-                    )));
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text("USD Exchange Rate",
+                                style: primaryStyle(context)),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            buildTextField(
+                                controller: exchangeRate,
+                                hint: "USD EXchange Rate",
+                                numeric: true),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text("Main Products", style: primaryStyle(context)),
+                            DynamicProductsList(list: mainProducts),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text("Side Products", style: primaryStyle(context)),
+                            DynamicProductsList(list: sideProducts),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            buildSaveDeleteButtons(
+                                data: null,
+                                saveFunction: () {
+                                  Deal newDeal = Deal(
+                                      supplierID: selectedSupplier!.id!,
+                                      assetID: selectedAsset!.id!,
+                                      date: selectedDate,
+                                      conversionValueUSD:
+                                          double.parse(exchangeRate.text),
+                                      mainProducts: mainProducts,
+                                      sideProducts: sideProducts);
+                                  Provider.of<DealsProvider>(context,
+                                          listen: false)
+                                      .addDeal(newDeal);
+                                },
+                                deleteFunction: () {})
+                          ],
+                        ))));
           } else if (value.addDone) {
             Future.microtask(() {
               if (context.mounted) {
@@ -167,6 +205,11 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
           return const Center(child: CircularProgressIndicator());
         }));
   }
+
+  bool checkReady(DealsProvider value) {
+    return !value.addDone &&
+        !value.addLoading &&
+        !value.getAssetsAndSuppliersLoading &&
+        value.getAssetsAndSuppliersDone;
+  }
 }
-
-

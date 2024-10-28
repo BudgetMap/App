@@ -1,12 +1,14 @@
 import 'package:budget_map/widgets/small_outlined_button.dart';
+import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/ordered_product.dart';
 
 class DynamicProductsList extends StatefulWidget {
   final List<OrderedProduct> list;
 
-  const DynamicProductsList({super.key, required this.list});
+
+  const DynamicProductsList(
+      {super.key, required this.list});
 
   @override
   State<StatefulWidget> createState() => _DynamicProductsList();
@@ -17,127 +19,117 @@ class _DynamicProductsList extends State<DynamicProductsList> {
   TextEditingController amount = TextEditingController();
   TextEditingController priceInUSD = TextEditingController();
 
+  TextStyle standardTextStyle(context) => TextStyle(
+      overflow: TextOverflow.ellipsis,
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+      fontFamily: Theme.of(context).textTheme.bodyLarge?.fontFamily,
+      fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListView.separated(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-                margin: const EdgeInsets.all(10),
+        ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
+                    borderRadius: BorderRadius.circular(15.0)),
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Text(
-                        widget.list[index].name,
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize),
-                      ),
-                      Text(
-                        widget.list[index].amount.toString(),
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize),
-                      ),
-                      Text(
-                        widget.list[index].priceInUSD.toString(),
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize),
-                      )
-                    ],
-                  ),
-                ));
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(
-              height: 10.0,
-              color: Theme.of(context).colorScheme.surface,
-            );
-          },
-          itemCount: widget.list.length,
-        ),
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 3,
+                            child: Text(
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                              widget.list[index].name,
+                              style: standardTextStyle(context),
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: Row(children: [
+                              const Text(
+                                "\u0024",
+                                style: TextStyle(color: Colors.green),
+                              ),
+                              Text(
+                                widget.list[index].amount.toString(),
+                                style: standardTextStyle(context),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "x",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                widget.list[index].priceInUSD.toString(),
+                                style: standardTextStyle(context),
+                              )
+                            ]))
+                      ],
+                    )),
+              );
+            },
+            itemCount: widget.list.length),
         Card(
-            margin: const EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            child: Padding(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          child: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  TextField(
-                    controller: name,
-                    decoration: const InputDecoration(
-                        filled: true, hintText: "Original Amount"),
-                  ),
-                  TextField(
-                    controller: amount,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: const InputDecoration(
-                        filled: true, hintText: "Original Amount"),
-                  ),
-                  TextField(
-                    controller: priceInUSD,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: const InputDecoration(
-                        filled: true, hintText: "Original Amount"),
-                  ),
-                  buildSmallOutlinedButton(
-                    context: context,
-                    text: 'Save',
-                    onPress: () {
-                      OrderedProduct newOrderedProduct = OrderedProduct(
-                          name: name.text,
-                          amount: int.parse(amount.text),
-                          priceInUSD: int.parse(priceInUSD.text));
-                      setState(() {
-                        widget.list.add(newOrderedProduct);
-                      });
-                    },
-                  )
+                  Row(children: [
+                    Expanded(
+                        child: buildTextField(
+                            controller: name, hint: "Product Name"))
+                  ]),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    Expanded(
+                        child: buildTextField(
+                            controller: amount, hint: "Amount", numeric: true)),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: buildTextField(
+                            controller: priceInUSD,
+                            hint: "Price",
+                            numeric: true)),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: buildSmallOutlinedButton(
+                      context: context,
+                      text: 'Add',
+                      onPress: () {
+                        if (name.text.isEmpty ||
+                            amount.text.isEmpty ||
+                            priceInUSD.text.isEmpty) {
+                          return;
+                        }
+                        OrderedProduct newOrderedProduct = OrderedProduct(
+                            name: name.text,
+                            amount: int.parse(amount.text),
+                            priceInUSD: int.parse(priceInUSD.text));
+                        setState(() {
+                          widget.list.add(newOrderedProduct);
+                          name.clear();
+                          amount.clear();
+                          priceInUSD.clear();
+                        });
+                      },
+                    ))
+                  ])
                 ],
-              ),
-            ))
+              )),
+        )
       ],
     );
   }

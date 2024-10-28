@@ -7,7 +7,6 @@ OutlinedButton buildOutlinedButton(
   return OutlinedButton(
     style: OutlinedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        padding: const EdgeInsets.only(top: 10),
         side: BorderSide(
             width: 1.0, color: Theme.of(context).colorScheme.outlineVariant)),
     onPressed: onPress,

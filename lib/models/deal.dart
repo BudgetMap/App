@@ -11,7 +11,7 @@ class Deal {
   late List<OrderedProduct> mainProducts;
   late List<OrderedProduct> sideProducts;
 
-  static const String dateFormat = "yyyy-mm-dd";
+  static const String dateFormat = "yyyy-MM-dd";
 
   Deal(
       {this.id,
@@ -27,12 +27,12 @@ class Deal {
       supplierID: json['supplier_id'],
       assetID: json['asset_id'],
       date: DateFormat(dateFormat).parse(json['deal_date']),
-      conversionValueUSD: json['conversion_value_usd'],
+      conversionValueUSD: (json['conversion_value_usd'] as int).toDouble(),
       mainProducts: decodeProductsList(json['main_products']),
       sideProducts: decodeProductsList(json['side_products']));
 
-  static List<OrderedProduct> decodeProductsList(Map<String, dynamic> json) =>
-      (jsonDecode(json['main_products']) as List)
+  static List<OrderedProduct> decodeProductsList(String json) =>
+      (jsonDecode(json) as List)
           .map((i) => OrderedProduct.fromJson(i))
           .toList();
 
