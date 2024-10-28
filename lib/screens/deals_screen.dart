@@ -52,8 +52,9 @@ class _DealsScreenState extends State<DealsScreen> {
                                 context: context,
                                 value: value,
                                 i: i,
-                                onLongPressFunction: () => addDealScreen(
-                                    context: context, deal: value.data[i]));
+                                onLongPressFunction: () {
+                                  //Todo
+                                });
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 3);

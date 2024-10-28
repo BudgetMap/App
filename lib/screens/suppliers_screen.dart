@@ -1,4 +1,5 @@
 import 'package:budget_map/providers/suppliers_provider.dart';
+import 'package:budget_map/screens/suppliers_add_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/supplier.dart';
@@ -36,10 +37,12 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
           builder:
               (BuildContext context, SuppliersProvider value, Widget? child) {
             if (value.getDone) {
-              return Center(
+              return Align(
+                  alignment: Alignment.topCenter,
                   child: SizedBox(
                       width: MediaQuery.sizeOf(context).width - 20.0,
                       child: ListView.separated(
+                          shrinkWrap: true,
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
@@ -65,15 +68,15 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
 
   void addSupplierScreen(
       {required BuildContext context, required Supplier? supplier}) {
-    // Provider.of<SuppliersProvider>(context, listen: false).addDone = false;
-    // Provider.of<SuppliersProvider>(context, listen: false).addLoading = false;
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(
-    //         builder: (context) => SuppliersAddScreen(supplier: supplier)))
-    //     .then((result) {
-    //   if (context.mounted) {
-    //     Provider.of<SuppliersProvider>(context, listen: false).getSuppliers();
-    //   }
-    // });
+    Provider.of<SuppliersProvider>(context, listen: false).addDone = false;
+    Provider.of<SuppliersProvider>(context, listen: false).addLoading = false;
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => SuppliersAddScreen(supplier: supplier)))
+        .then((result) {
+      if (context.mounted) {
+        Provider.of<SuppliersProvider>(context, listen: false).getSuppliers();
+      }
+    });
   }
 }

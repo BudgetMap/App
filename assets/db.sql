@@ -1,6 +1,6 @@
 CREATE TABLE asset (
   id SERIAL PRIMARY KEY,
-  name TEXT,
+  asset_name TEXT,
   original_amount INTEGER,
   consumed_amount INTEGER
 );

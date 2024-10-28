@@ -39,6 +39,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                   child: SizedBox(
                       width: MediaQuery.sizeOf(context).width - 20.0,
                       child: ListView.separated(
+                          shrinkWrap: true,
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {

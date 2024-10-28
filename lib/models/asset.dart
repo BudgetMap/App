@@ -12,7 +12,7 @@ class Asset {
 
   factory Asset.fromJSON(Map<String, dynamic> json) => Asset(
       id: json['id'],
-      name: json['name'],
+      name: json['asset_name'],
       originalAmount: json['original_amount'],
       consumedAmount: json['consumed_amount']);
 
@@ -20,16 +20,26 @@ class Asset {
     if (id != null) {
       return {
         'id': id,
-        'name': name,
+        'asset_name': name,
         'original_amount': originalAmount,
         'consumed_amount': consumedAmount
       };
     } else {
       return {
-        'name': name,
+        'asset_name': name,
         'original_amount': originalAmount,
         'consumed_amount': consumedAmount
       };
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+    'id': $id,
+    'asset_name': $name,
+    'original_amount': $originalAmount,
+    'consumed_amount': $consumedAmount
+    ''';
   }
 }

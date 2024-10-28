@@ -25,4 +25,13 @@ class Supplier {
       };
     }
   }
+
+  @override
+  String toString() {
+    return '''
+      'id': $id,
+      'name': $name,
+      'info': $info,
+    ''';
+  }
 }

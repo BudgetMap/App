@@ -5,7 +5,7 @@ class DealsService {
   Future<List<Map<String, dynamic>>?> getDeals() async {
     try {
       List<Map<String, dynamic>> result =
-          await Supabase.instance.client.from('deal').select();
+          await Supabase.instance.client.from('deal').select("*, asset(*), supplier(*)");
       return result;
     } catch (e) {
       if (kDebugMode) {
