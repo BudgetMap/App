@@ -1,7 +1,6 @@
 import 'package:budget_map/providers/assets_provider.dart';
 import 'package:budget_map/providers/deals_provider.dart';
 import 'package:budget_map/providers/suppliers_provider.dart';
-import 'package:budget_map/screens/deals_add_screen.dart';
 import 'package:budget_map/screens/menu_screen.dart';
 import 'package:budget_map/theme.dart';
 import 'package:flutter/material.dart';
