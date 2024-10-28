@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/asset.dart';
 import '../widgets/appbar.dart';
+import '../widgets/save_delete_builder.dart';
 import '../widgets/small_outlined_button.dart';
 
 class AssetsAddScreen extends StatefulWidget {
@@ -28,6 +29,17 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
       originalAmount.text = widget.asset!.originalAmount.toString();
       consumedAmount.text = widget.asset!.consumedAmount.toString();
     }
+  }
+
+  void saveAsset({
+    required TextEditingController name,
+    required TextEditingController originalAmount,
+    required TextEditingController consumedAmount,
+  }) {
+    Provider.of<AssetsProvider>(context, listen: false).addAsset(Asset(
+        name: name.text,
+        originalAmount: int.parse(originalAmount.text),
+        consumedAmount: int.parse(consumedAmount.text)));
   }
 
   @override
@@ -56,50 +68,13 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
                             controller: consumedAmount,
                             hint: "Consumed Amount",
                             numeric: true),
-                        Builder(builder: (BuildContext context) {
-                          if (widget.asset == null) {
-                            return buildSmallOutlinedButton(
-                              context: context,
-                              text: 'Save',
-                              onPress: () {
-                                Provider.of<AssetsProvider>(context,
-                                        listen: false)
-                                    .addAsset(Asset(
-                                        name: name.text,
-                                        originalAmount:
-                                            int.parse(originalAmount.text),
-                                        consumedAmount:
-                                            int.parse(consumedAmount.text)));
-                              },
-                            );
-                          } else {
-                            return Row(
-                              children: [
-                                Expanded(
-                                    child: buildSmallOutlinedButton(
-                                  color: Theme.of(context).colorScheme.error,
-                                  onColor:
-                                      Theme.of(context).colorScheme.onError,
-                                  context: context,
-                                  text: 'Delete',
-                                  onPress: () {
-                                    // Todo
-                                  },
-                                )),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                    child: buildSmallOutlinedButton(
-                                  context: context,
-                                  text: 'Save',
-                                  onPress: () {
-                                    // Todo
-                                  },
-                                ))
-                              ],
-                            );
-                            // }
-                          }
-                        })
+                        buildSaveDeleteButtons(
+                            data: widget.asset,
+                            saveFunction: () => saveAsset(
+                                name: name,
+                                originalAmount: originalAmount,
+                                consumedAmount: consumedAmount),
+                            deleteFunction: () {})
                       ],
                     )));
           } else if (value.addDone) {

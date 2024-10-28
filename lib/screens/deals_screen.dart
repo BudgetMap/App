@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/deal.dart';
 import '../widgets/appbar.dart';
+import '../widgets/deal_card.dart';
 import 'deals_add_screen.dart';
 
 class DealsScreen extends StatefulWidget {
@@ -47,7 +48,12 @@ class _DealsScreenState extends State<DealsScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
-                            return buildCard(context, value, i);
+                            return buildDealCard(
+                                context: context,
+                                value: value,
+                                i: i,
+                                onLongPressFunction: () => addDealScreen(
+                                    context: context, deal: value.data[i]));
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 3);
@@ -57,87 +63,6 @@ class _DealsScreenState extends State<DealsScreen> {
             }
           },
         ));
-  }
-
-  GestureDetector buildCard(BuildContext context, DealsProvider value, int i) {
-    return GestureDetector(
-        onLongPress: () => addDealScreen(context: context, deal: value.data[i]),
-        child: Card(
-            margin: const EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        value.data[i].id.toString(),
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "T:",
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontSize),
-                      ),
-                      Text(
-                        "C:",
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontSize),
-                      ),
-                      Text(
-                        "R:",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.fontSize),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )));
   }
 
   void addDealScreen({required BuildContext context, required Deal? deal}) {
