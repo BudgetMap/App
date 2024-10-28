@@ -1,10 +1,10 @@
 import 'package:budget_map/providers/assets_provider.dart';
-import 'package:budget_map/screens/menu_screen.dart';
+import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import '../models/asset.dart';
+import '../widgets/appbar.dart';
+import '../widgets/small_outlined_button.dart';
 
 class AssetsAddScreen extends StatefulWidget {
   const AssetsAddScreen({super.key, this.asset});
@@ -47,31 +47,15 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
                       // to apply margin in the main axis of the wrap
                       runSpacing: 20,
                       children: [
-                        TextField(
-                          controller: name,
-                          decoration: const InputDecoration(
-                            filled: true,
-                            hintText: "Name",
-                          ),
-                        ),
-                        TextField(
-                          controller: originalAmount,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: const InputDecoration(
-                              filled: true, hintText: "Original Amount"),
-                        ),
-                        TextField(
-                          controller: consumedAmount,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: const InputDecoration(
-                              filled: true, hintText: "Consumed Amount"),
-                        ),
+                        buildTextField(controller: name, hint: "name"),
+                        buildTextField(
+                            controller: originalAmount,
+                            hint: "Original Amount",
+                            numeric: true),
+                        buildTextField(
+                            controller: consumedAmount,
+                            hint: "Consumed Amount",
+                            numeric: true),
                         Builder(builder: (BuildContext context) {
                           if (widget.asset == null) {
                             return buildSmallOutlinedButton(
@@ -119,6 +103,7 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
                       ],
                     )));
           } else if (value.addDone) {
+            value.addDone = false;
             Future.microtask(() {
               if (context.mounted) {
                 Navigator.pop(context);
@@ -128,28 +113,4 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
           return const Center(child: CircularProgressIndicator());
         }));
   }
-}
-
-OutlinedButton buildSmallOutlinedButton(
-    {required BuildContext context,
-    required String text,
-    required void Function()? onPress,
-    Color? color,
-    Color? onColor}) {
-  return OutlinedButton(
-    style: OutlinedButton.styleFrom(
-        backgroundColor: onColor ?? Theme.of(context).colorScheme.surface,
-        side: BorderSide(
-            width: 1.0, color: Theme.of(context).colorScheme.outlineVariant)),
-    onPressed: onPress,
-    child: Align(
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: TextStyle(
-              color: color ?? Theme.of(context).colorScheme.primary,
-              fontFamily: Theme.of(context).textTheme.bodyLarge?.fontFamily,
-              fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
-        )),
-  );
 }

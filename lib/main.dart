@@ -9,10 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  /*
-  flutter build apk --release  --dart-define=SUPABASE_URL="..."
-  --dart-define=SUPABASE_ANNON_KEY="..."
-   */
+  // flutter build apk --release  --dart-define=SUPABASE_URL="..."
+  // --dart-define=SUPABASE_ANNON_KEY="..."
   // await Supabase.initialize(
   //   url: const String.fromEnvironment("SUPABASE_URL"),
   //   anonKey: const String.fromEnvironment("SUPABASE_ANNON_KEY"),

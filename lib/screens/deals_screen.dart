@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/deal.dart';
+import '../widgets/appbar.dart';
 import 'deals_add_screen.dart';
-import 'menu_screen.dart';
 
 class DealsScreen extends StatefulWidget {
   const DealsScreen({super.key});

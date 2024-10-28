@@ -2,7 +2,8 @@ import 'package:budget_map/providers/suppliers_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/supplier.dart';
-import 'menu_screen.dart';
+import '../widgets/appbar.dart';
+import '../widgets/supplier_card.dart';
 
 class SuppliersScreen extends StatefulWidget {
   const SuppliersScreen({super.key});
@@ -42,7 +43,15 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
-                            return buildSupplierCard(context, value, i);
+                            return buildSupplierCard(
+                                context: context,
+                                value: value,
+                                i: i,
+                                onLongPressFunction: () {
+                                  addSupplierScreen(
+                                      context: context,
+                                      supplier: value.data[i]);
+                                });
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 3);
@@ -51,53 +60,6 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
               return const Center(child: CircularProgressIndicator());
             }
           },
-        ));
-  }
-
-  GestureDetector buildSupplierCard(
-      BuildContext context, SuppliersProvider value, int i) {
-    return GestureDetector(
-        onLongPress: () =>
-            addSupplierScreen(context: context, supplier: value.data[i]),
-        child: Card(
-          margin: const EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        value.data[i].name,
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontFamily: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontFamily,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.fontSize),
-                      )
-                    ],
-                  ),
-                  Text(
-                    value.data[i].info,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontFamily:
-                            Theme.of(context).textTheme.bodySmall?.fontFamily,
-                        fontSize:
-                            Theme.of(context).textTheme.bodySmall?.fontSize),
-                  ),
-                ],
-              )),
         ));
   }
 
