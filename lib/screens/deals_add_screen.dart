@@ -54,6 +54,9 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
     }
   }
 
+
+  // Todo: Fix dropdown bug
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +65,8 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
         body: Consumer<DealsProvider>(builder:
             (BuildContext context, DealsProvider value, Widget? child) {
           if (checkReady(value)) {
-            selectedSupplier=value.suppliers[0];
-            selectedAsset=value.assets[0];
+            selectedSupplier = value.suppliers[0];
+            selectedAsset = value.assets[0];
             return SingleChildScrollView(
                 child: Align(
                     alignment: Alignment.topCenter,
@@ -73,68 +76,86 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Select Asset", style: primaryStyle(context)),
-                            DropdownButton<Asset>(
-                              isExpanded: true,
-                              value: value.assets[0],
-                              icon: Icon(Icons.arrow_downward,
-                                  color: Theme.of(context).colorScheme.primary),
-                              elevation: 16,
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer),
-                              underline: Container(
-                                height: 2,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
-                              onChanged: (Asset? selection) {
-                                // This is called when the user selects an item.
-                                selectedAsset = selection;
-                              },
-                              items: value.assets
-                                  .map<DropdownMenuItem<Asset>>((Asset asset) {
-                                return DropdownMenuItem<Asset>(
-                                  value: asset,
-                                  child: Text(asset.name),
+                            StatefulBuilder(
+                              builder: (BuildContext context,
+                                  void Function(void Function())
+                                      setStateOfWidget) {
+                                return DropdownButton<Asset>(
+                                  isExpanded: true,
+                                  value: selectedAsset,
+                                  icon: Icon(Icons.arrow_downward,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  elevation: 16,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                  ),
+                                  onChanged: (Asset? selection) {
+                                    // This is called when the user selects an item.
+                                    setStateOfWidget(() {
+                                      selectedAsset = selection;
+                                    });
+                                  },
+                                  items: value.assets
+                                      .map<DropdownMenuItem<Asset>>(
+                                          (Asset asset) {
+                                    return DropdownMenuItem<Asset>(
+                                      value: asset,
+                                      child: Text(asset.name),
+                                    );
+                                  }).toList(),
                                 );
-                              }).toList(),
+                              },
                             ),
                             const SizedBox(
                               height: 15,
                             ),
                             Text("Select Supplier",
                                 style: primaryStyle(context)),
-                            DropdownButton<Supplier>(
-                              isExpanded: true,
-                              value: value.suppliers[0],
-                              icon: Icon(Icons.arrow_downward,
-                                  color: Theme.of(context).colorScheme.primary),
-                              elevation: 16,
-                              style: TextStyle(
+                            StatefulBuilder(builder: (BuildContext context,
+                                void Function(void Function())
+                                    setStateOfWidget) {
+                              return DropdownButton<Supplier>(
+                                isExpanded: true,
+                                value: selectedSupplier,
+                                icon: Icon(Icons.arrow_downward,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                elevation: 16,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer),
+                                underline: Container(
+                                  height: 2,
                                   color: Theme.of(context)
                                       .colorScheme
-                                      .onPrimaryContainer),
-                              underline: Container(
-                                height: 2,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
-                              onChanged: (Supplier? selection) {
-                                // This is called when the user selects an item.
-                                selectedSupplier = selection;
-                              },
-                              items: value.suppliers
-                                  .map<DropdownMenuItem<Supplier>>(
-                                      (Supplier supplier) {
-                                return DropdownMenuItem<Supplier>(
-                                  value: supplier,
-                                  child: Text(supplier.name),
-                                );
-                              }).toList(),
-                            ),
+                                      .primaryContainer,
+                                ),
+                                onChanged: (Supplier? selection) {
+                                  // This is called when the user selects an item.
+                                  setStateOfWidget(() {
+                                    selectedSupplier = selection;
+                                  });
+                                },
+                                items: value.suppliers
+                                    .map<DropdownMenuItem<Supplier>>(
+                                        (Supplier supplier) {
+                                  return DropdownMenuItem<Supplier>(
+                                    value: supplier,
+                                    child: Text(supplier.name),
+                                  );
+                                }).toList(),
+                              );
+                            }),
                             const SizedBox(
                               height: 15,
                             ),

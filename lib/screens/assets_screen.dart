@@ -35,7 +35,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
         body: Consumer<AssetsProvider>(
           builder: (BuildContext context, AssetsProvider value, Widget? child) {
             if (value.getDone) {
-              return Center(
+              return Align(
+                  alignment: Alignment.topCenter,
                   child: SizedBox(
                       width: MediaQuery.sizeOf(context).width - 20.0,
                       child: ListView.separated(

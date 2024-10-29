@@ -39,7 +39,7 @@ class _SuppliersAddScreenState extends State<SuppliersAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Asset'),
+        appBar: buildAppBar(context: context, title: 'Supplier'),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<SuppliersProvider>(builder:
             (BuildContext context, SuppliersProvider value, Widget? child) {

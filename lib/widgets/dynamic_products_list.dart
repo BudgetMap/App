@@ -57,7 +57,7 @@ class _DynamicProductsList extends State<DynamicProductsList> {
                                 style: TextStyle(color: Colors.green),
                               ),
                               Text(
-                                widget.list[index].amount.toString(),
+                                widget.list[index].priceInUSD.toString(),
                                 style: standardTextStyle(context),
                               ),
                               const SizedBox(width: 10),
@@ -66,7 +66,7 @@ class _DynamicProductsList extends State<DynamicProductsList> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                widget.list[index].priceInUSD.toString(),
+                                widget.list[index].amount.toString(),
                                 style: standardTextStyle(context),
                               )
                             ]))

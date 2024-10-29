@@ -73,6 +73,7 @@ GestureDetector buildDealCard(
                     ),
                   ],
                 ),
+                const SizedBox(width: 10),
                 Text(
                   "Main Products",
                   style: TextStyle(

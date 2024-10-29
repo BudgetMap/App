@@ -42,7 +42,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return Divider(
-                      height: 10.0,
+                      height: 5.0,
                       color: Theme.of(context).colorScheme.surface,
                     );
                   },
