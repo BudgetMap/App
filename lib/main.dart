@@ -1,3 +1,4 @@
+import 'package:budget_map/providers/Images_provider.dart';
 import 'package:budget_map/providers/assets_provider.dart';
 import 'package:budget_map/providers/deals_provider.dart';
 import 'package:budget_map/providers/suppliers_provider.dart';
@@ -39,15 +40,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AssetsProvider()),
         ChangeNotifierProvider(create: (context) => SuppliersProvider()),
         ChangeNotifierProvider(create: (context) => DealsProvider()),
+        ChangeNotifierProvider(create: (context) => ImagesProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: theme.light(),
-        darkTheme: theme.dark(),
-        themeMode: ThemeMode.system,
-        title: 'Budget Map',
-        home: const MenuScreen(),
-      ),
+          debugShowCheckedModeBanner: false,
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          themeMode: ThemeMode.system,
+          title: 'Budget Map',
+          home: const MenuScreen(),
+          ),
     );
   }
 }

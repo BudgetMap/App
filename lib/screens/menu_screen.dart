@@ -1,4 +1,5 @@
 import 'package:budget_map/screens/assets_screen.dart';
+import 'package:budget_map/screens/image_screen.dart';
 import 'package:budget_map/screens/suppliers_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/appbar.dart';
@@ -16,7 +17,8 @@ class _MenuScreenState extends State<MenuScreen> {
   Map<String, Widget> options = {
     'Assets': const AssetsScreen(),
     'Suppliers': const SuppliersScreen(),
-    'Deals': const DealsScreen()
+    'Deals': const DealsScreen(),
+    'Images': const ImagesScreen()
   };
 
   @override
