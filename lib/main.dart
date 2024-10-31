@@ -1,7 +1,7 @@
 import 'package:budget_map/providers/Images_provider.dart';
-import 'package:budget_map/providers/assets_provider.dart';
-import 'package:budget_map/providers/deals_provider.dart';
-import 'package:budget_map/providers/suppliers_provider.dart';
+import 'package:budget_map/providers/budget_provider.dart';
+import 'package:budget_map/providers/committee_provider.dart';
+import 'package:budget_map/providers/company_provider.dart';
 import 'package:budget_map/screens/menu_screen.dart';
 import 'package:budget_map/theme.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // String titleFontFamily = 'IBM Plex Sans Arabic';
+    // String bodyFontFamily = "Lateef";
     String titleFontFamily = 'Roboto';
     String bodyFontFamily = "Open Sans";
     TextTheme textTheme =
@@ -37,9 +39,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AssetsProvider()),
-        ChangeNotifierProvider(create: (context) => SuppliersProvider()),
-        ChangeNotifierProvider(create: (context) => DealsProvider()),
+        ChangeNotifierProvider(create: (context) => BudgetProvider()),
+        ChangeNotifierProvider(create: (context) => CompanyProvider()),
+        ChangeNotifierProvider(create: (context) => CommitteeProvider()),
         ChangeNotifierProvider(create: (context) => ImagesProvider()),
       ],
       child: MaterialApp(

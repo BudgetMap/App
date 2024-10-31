@@ -1,30 +1,30 @@
-CREATE TABLE asset (
+CREATE TABLE budget (
   id SERIAL PRIMARY KEY,
-  asset_name TEXT,
+  budget_name TEXT,
   original_amount INTEGER,
-  consumed_amount INTEGER
+  consumed_amount INTEGER,
+  budget_number INTEGER
 );
 
-CREATE TABLE supplier (
+CREATE TABLE company (
   id SERIAL PRIMARY KEY,
-  name TEXT,
+  company_name TEXT,
   info TEXT
 );
 
-CREATE TABLE deal (
+CREATE TABLE committee (
   id SERIAL PRIMARY KEY,
-  supplier_id INTEGER references supplier(id),
-  asset_id INTEGER references asset(id),
-  deal_date date,
-  conversion_value_usd float,
-  main_products json,
-  side_products json null
+  committee_number INTEGER,
+  budget_id INTEGER references budget(id),
+  committee_date date,
+  usd_exchange_rate float,
+  committee_image_url TEXT,
+  committee_image_path TEXT
 );
 
-CREATE TABLE status (
+CREATE TABLE image (
   id SERIAL PRIMARY KEY,
-  deal_id INTEGER references deal(id),
-  paid_amount INTEGER null,
-  delivered_products json null,
-  notes text null,
+  name TEXT,
+  url TEXT,
+  path TEXT
 );

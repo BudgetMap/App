@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,7 +21,9 @@ class PhotoViewScreen extends StatelessWidget {
       body: PhotoView(
         imageProvider:
             CachedNetworkImageProvider(imageUrl, errorListener: (error) {
-          print(error);
+          if (kDebugMode) {
+            print(error);
+          }
         }, headers: Supabase.instance.client.auth.headers),
         minScale: PhotoViewComputedScale.contained * 0.8,
         maxScale: PhotoViewComputedScale.covered * 1.8,

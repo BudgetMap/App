@@ -1,29 +1,27 @@
-import 'package:budget_map/models/ordered_product.dart';
-import 'package:budget_map/models/supplier.dart';
-import 'package:budget_map/providers/deals_provider.dart';
+import 'package:budget_map/providers/committee_provider.dart';
 import 'package:budget_map/widgets/save_delete_builder.dart';
 import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/asset.dart';
-import '../models/deal.dart';
+import '../models/budget.dart';
+import '../models/committee.dart';
 import '../widgets/appbar.dart';
-import '../widgets/dynamic_products_list.dart';
 
-class DealsAddScreen extends StatefulWidget {
-  const DealsAddScreen({super.key, this.deal});
+class AddCommitteeScreen extends StatefulWidget {
+  const AddCommitteeScreen({super.key, this.committee});
 
-  final Deal? deal;
+  final Committee? committee;
 
   @override
-  State<DealsAddScreen> createState() => _DealsAddScreenState();
+  State<AddCommitteeScreen> createState() => _AddCommitteeScreenState();
 }
 
-class _DealsAddScreenState extends State<DealsAddScreen> {
-  Asset? selectedAsset;
-  Supplier? selectedSupplier;
-  List<OrderedProduct> mainProducts = [];
-  List<OrderedProduct> sideProducts = [];
+class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
+  Budget? selectedBudget;
+
+  // Company? selectedSupplier;
+  // List<OrderedProduct> mainProducts = [];
+  // List<OrderedProduct> sideProducts = [];
   DateTime selectedDate = DateTime.now();
   TextEditingController exchangeRate = TextEditingController();
 
@@ -48,25 +46,24 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<DealsProvider>(context, listen: false).getAssetsAndSuppliers();
-    if (widget.deal != null) {
+    Provider.of<CommitteeProvider>(context, listen: false).getBudgets();
+    if (widget.committee != null) {
       // Todo
     }
   }
-
 
   // Todo: Fix dropdown bug
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Deal'),
+        appBar: buildAppBar(context: context, title: 'Committee'),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<DealsProvider>(builder:
-            (BuildContext context, DealsProvider value, Widget? child) {
+        body: Consumer<CommitteeProvider>(builder:
+            (BuildContext context, CommitteeProvider value, Widget? child) {
           if (checkReady(value)) {
-            selectedSupplier = value.suppliers[0];
-            selectedAsset = value.assets[0];
+            // selectedSupplier = value.suppliers[0];
+            selectedBudget = value.budgets[0];
             return SingleChildScrollView(
                 child: Align(
                     alignment: Alignment.topCenter,
@@ -75,14 +72,14 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Select Asset", style: primaryStyle(context)),
+                            Text("Select Budget", style: primaryStyle(context)),
                             StatefulBuilder(
                               builder: (BuildContext context,
                                   void Function(void Function())
                                       setStateOfWidget) {
-                                return DropdownButton<Asset>(
+                                return DropdownButton<Budget>(
                                   isExpanded: true,
-                                  value: selectedAsset,
+                                  value: selectedBudget,
                                   icon: Icon(Icons.arrow_downward,
                                       color: Theme.of(context)
                                           .colorScheme
@@ -98,18 +95,18 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                                         .colorScheme
                                         .primaryContainer,
                                   ),
-                                  onChanged: (Asset? selection) {
+                                  onChanged: (Budget? selection) {
                                     // This is called when the user selects an item.
                                     setStateOfWidget(() {
-                                      selectedAsset = selection;
+                                      selectedBudget = selection;
                                     });
                                   },
-                                  items: value.assets
-                                      .map<DropdownMenuItem<Asset>>(
-                                          (Asset asset) {
-                                    return DropdownMenuItem<Asset>(
-                                      value: asset,
-                                      child: Text(asset.name),
+                                  items: value.budgets
+                                      .map<DropdownMenuItem<Budget>>(
+                                          (Budget budget) {
+                                    return DropdownMenuItem<Budget>(
+                                      value: budget,
+                                      child: Text(budget.name),
                                     );
                                   }).toList(),
                                 );
@@ -118,44 +115,44 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                             const SizedBox(
                               height: 15,
                             ),
-                            Text("Select Supplier",
-                                style: primaryStyle(context)),
-                            StatefulBuilder(builder: (BuildContext context,
-                                void Function(void Function())
-                                    setStateOfWidget) {
-                              return DropdownButton<Supplier>(
-                                isExpanded: true,
-                                value: selectedSupplier,
-                                icon: Icon(Icons.arrow_downward,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                elevation: 16,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer),
-                                underline: Container(
-                                  height: 2,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer,
-                                ),
-                                onChanged: (Supplier? selection) {
-                                  // This is called when the user selects an item.
-                                  setStateOfWidget(() {
-                                    selectedSupplier = selection;
-                                  });
-                                },
-                                items: value.suppliers
-                                    .map<DropdownMenuItem<Supplier>>(
-                                        (Supplier supplier) {
-                                  return DropdownMenuItem<Supplier>(
-                                    value: supplier,
-                                    child: Text(supplier.name),
-                                  );
-                                }).toList(),
-                              );
-                            }),
+                            // Text("Select Supplier",
+                            //     style: primaryStyle(context)),
+                            // StatefulBuilder(builder: (BuildContext context,
+                            //     void Function(void Function())
+                            //         setStateOfWidget) {
+                            //   return DropdownButton<Company>(
+                            //     isExpanded: true,
+                            //     value: selectedSupplier,
+                            //     icon: Icon(Icons.arrow_downward,
+                            //         color:
+                            //             Theme.of(context).colorScheme.primary),
+                            //     elevation: 16,
+                            //     style: TextStyle(
+                            //         color: Theme.of(context)
+                            //             .colorScheme
+                            //             .onPrimaryContainer),
+                            //     underline: Container(
+                            //       height: 2,
+                            //       color: Theme.of(context)
+                            //           .colorScheme
+                            //           .primaryContainer,
+                            //     ),
+                            //     onChanged: (Company? selection) {
+                            //       // This is called when the user selects an item.
+                            //       setStateOfWidget(() {
+                            //         selectedSupplier = selection;
+                            //       });
+                            //     },
+                            //     items: value.suppliers
+                            //         .map<DropdownMenuItem<Company>>(
+                            //             (Company supplier) {
+                            //       return DropdownMenuItem<Company>(
+                            //         value: supplier,
+                            //         child: Text(supplier.name),
+                            //       );
+                            //     }).toList(),
+                            //   );
+                            // }),
                             const SizedBox(
                               height: 15,
                             ),
@@ -183,35 +180,33 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
                             ),
                             buildTextField(
                                 controller: exchangeRate,
-                                hint: "USD EXchange Rate",
+                                hint: "USD Exchange Rate",
                                 numeric: true),
                             const SizedBox(
                               height: 15,
                             ),
-                            Text("Main Products", style: primaryStyle(context)),
-                            DynamicProductsList(list: mainProducts),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text("Side Products", style: primaryStyle(context)),
-                            DynamicProductsList(list: sideProducts),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            // Text("Main Products", style: primaryStyle(context)),
+                            // DynamicProductsList(list: mainProducts),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
+                            // Text("Side Products", style: primaryStyle(context)),
+                            // DynamicProductsList(list: sideProducts),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
                             buildSaveDeleteButtons(
                                 data: null,
                                 saveFunction: () {
-                                  Deal newDeal = Deal(
-                                      supplierID: selectedSupplier!.id!,
-                                      assetID: selectedAsset!.id!,
+                                  Committee newCommittee = Committee(
+                                      budgetID: selectedBudget!.id!,
                                       date: selectedDate,
-                                      conversionValueUSD:
+                                      exchangeRateUSD:
                                           double.parse(exchangeRate.text),
-                                      mainProducts: mainProducts,
-                                      sideProducts: sideProducts);
-                                  Provider.of<DealsProvider>(context,
+                                      number: 0);
+                                  Provider.of<CommitteeProvider>(context,
                                           listen: false)
-                                      .addDeal(newDeal);
+                                      .addCommittee(newCommittee);
                                 },
                                 deleteFunction: () {})
                           ],
@@ -227,10 +222,10 @@ class _DealsAddScreenState extends State<DealsAddScreen> {
         }));
   }
 
-  bool checkReady(DealsProvider value) {
+  bool checkReady(CommitteeProvider value) {
     return !value.addDone &&
         !value.addLoading &&
-        !value.getAssetsAndSuppliersLoading &&
-        value.getAssetsAndSuppliersDone;
+        !value.getBudgetsLoading &&
+        value.getBudgetsDone;
   }
 }

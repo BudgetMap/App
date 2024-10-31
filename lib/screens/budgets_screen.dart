@@ -1,23 +1,23 @@
-import 'package:budget_map/providers/assets_provider.dart';
-import 'package:budget_map/screens/assets_add_screen.dart';
+import 'package:budget_map/providers/budget_provider.dart';
+import 'package:budget_map/screens/add_budget_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/asset.dart';
+import '../models/budget.dart';
 import '../widgets/appbar.dart';
-import '../widgets/asset_card.dart';
+import '../widgets/budget_card.dart';
 
-class AssetsScreen extends StatefulWidget {
-  const AssetsScreen({super.key});
+class BudgetsScreen extends StatefulWidget {
+  const BudgetsScreen({super.key});
 
   @override
-  State<AssetsScreen> createState() => _AssetsScreenState();
+  State<BudgetsScreen> createState() => _BudgetsScreenState();
 }
 
-class _AssetsScreenState extends State<AssetsScreen> {
+class _BudgetsScreenState extends State<BudgetsScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<AssetsProvider>(context, listen: false).getAssets();
+    Provider.of<BudgetProvider>(context, listen: false).getBudgets();
   }
 
   @override
@@ -25,15 +25,15 @@ class _AssetsScreenState extends State<AssetsScreen> {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.surfaceBright,
-            onPressed: () => addAssetScreen(context: context, asset: null),
+            onPressed: () => addBudgetScreen(context: context, budget: null),
             child: Icon(
               Icons.add,
               color: Theme.of(context).colorScheme.onSurface,
             )),
-        appBar: buildAppBar(context: context, title: 'Assets'),
+        appBar: buildAppBar(context: context, title: 'Budgets'),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<AssetsProvider>(
-          builder: (BuildContext context, AssetsProvider value, Widget? child) {
+        body: Consumer<BudgetProvider>(
+          builder: (BuildContext context, BudgetProvider value, Widget? child) {
             if (value.getDone) {
               return Align(
                   alignment: Alignment.topCenter,
@@ -44,13 +44,13 @@ class _AssetsScreenState extends State<AssetsScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
-                            return buildAssetCard(
+                            return buildBudgetCard(
                                 context: context,
                                 value: value,
                                 i: i,
                                 onLongPressFunction: () {
-                                  addAssetScreen(
-                                      context: context, asset: value.data[i]);
+                                  addBudgetScreen(
+                                      context: context, budget: value.data[i]);
                                 });
                           },
                           separatorBuilder: (BuildContext context, int index) {
@@ -63,15 +63,15 @@ class _AssetsScreenState extends State<AssetsScreen> {
         ));
   }
 
-  void addAssetScreen({required BuildContext context, required Asset? asset}) {
-    Provider.of<AssetsProvider>(context, listen: false).addDone = false;
-    Provider.of<AssetsProvider>(context, listen: false).addLoading = false;
+  void addBudgetScreen({required BuildContext context, required Budget? budget}) {
+    Provider.of<BudgetProvider>(context, listen: false).addDone = false;
+    Provider.of<BudgetProvider>(context, listen: false).addLoading = false;
     Navigator.of(context)
         .push(MaterialPageRoute(
-            builder: (context) => AssetsAddScreen(asset: asset)))
+            builder: (context) => AddBudgetScreen(budget: budget)))
         .then((result) {
       if (context.mounted) {
-        Provider.of<AssetsProvider>(context, listen: false).getAssets();
+        Provider.of<BudgetProvider>(context, listen: false).getBudgets();
       }
     });
   }

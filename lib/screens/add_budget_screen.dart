@@ -1,21 +1,21 @@
-import 'package:budget_map/providers/assets_provider.dart';
+import 'package:budget_map/providers/budget_provider.dart';
 import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/asset.dart';
+import '../models/budget.dart';
 import '../widgets/appbar.dart';
 import '../widgets/save_delete_builder.dart';
 
-class AssetsAddScreen extends StatefulWidget {
-  const AssetsAddScreen({super.key, this.asset});
+class AddBudgetScreen extends StatefulWidget {
+  const AddBudgetScreen({super.key, this.budget});
 
-  final Asset? asset;
+  final Budget? budget;
 
   @override
-  State<AssetsAddScreen> createState() => _AssetsAddScreenState();
+  State<AddBudgetScreen> createState() => _AddBudgetScreenState();
 }
 
-class _AssetsAddScreenState extends State<AssetsAddScreen> {
+class _AddBudgetScreenState extends State<AddBudgetScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController originalAmount = TextEditingController();
   TextEditingController consumedAmount = TextEditingController();
@@ -23,31 +23,31 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.asset != null) {
-      name.text = widget.asset!.name;
-      originalAmount.text = widget.asset!.originalAmount.toString();
-      consumedAmount.text = widget.asset!.consumedAmount.toString();
+    if (widget.budget != null) {
+      name.text = widget.budget!.name;
+      originalAmount.text = widget.budget!.originalAmount.toString();
+      consumedAmount.text = widget.budget!.consumedAmount.toString();
     }
   }
 
-  void saveAsset({
+  void savebudget({
     required TextEditingController name,
     required TextEditingController originalAmount,
     required TextEditingController consumedAmount,
   }) {
-    Provider.of<AssetsProvider>(context, listen: false).addAsset(Asset(
+    Provider.of<BudgetProvider>(context, listen: false).addBudget(Budget(
         name: name.text,
         originalAmount: int.parse(originalAmount.text),
-        consumedAmount: int.parse(consumedAmount.text)));
+        consumedAmount: int.parse(consumedAmount.text), number: 0));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Asset'),
+        appBar: buildAppBar(context: context, title: 'budget'),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<AssetsProvider>(builder:
-            (BuildContext context, AssetsProvider value, Widget? child) {
+        body: Consumer<BudgetProvider>(builder:
+            (BuildContext context, BudgetProvider value, Widget? child) {
           if (!value.addDone && !value.addLoading) {
             return Align(
                 alignment: Alignment.topCenter,
@@ -68,8 +68,8 @@ class _AssetsAddScreenState extends State<AssetsAddScreen> {
                             hint: "Consumed Amount",
                             numeric: true),
                         buildSaveDeleteButtons(
-                            data: widget.asset,
-                            saveFunction: () => saveAsset(
+                            data: widget.budget,
+                            saveFunction: () => savebudget(
                                 name: name,
                                 originalAmount: originalAmount,
                                 consumedAmount: consumedAmount),

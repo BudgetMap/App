@@ -1,12 +1,13 @@
 import 'package:budget_map/screens/photo_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../providers/Images_provider.dart';
 import '../widgets/appbar.dart';
-import 'Images_add_screen.dart';
+import 'images_add_screen.dart';
+
 
 class ImagesScreen extends StatefulWidget {
   const ImagesScreen({super.key});
@@ -46,8 +47,11 @@ class _ImagesScreenState extends State<ImagesScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
-                            print(value.data[i].url);
-                            print(Supabase.instance.client.auth.headers);
+
+                            if (kDebugMode) {
+                              print(value.data[i].url);
+                              print(Supabase.instance.client.auth.headers);
+                            }
                             return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -65,7 +69,9 @@ class _ImagesScreenState extends State<ImagesScreen> {
                                         placeholder: (context, url) =>
                                         const CircularProgressIndicator(),
                                         errorWidget: (context, url, error) {
-                                          print(error);
+                                          if (kDebugMode) {
+                                            print(error);
+                                          }
                                           return const Icon(Icons.error);
                                         },
                                         httpHeaders: Supabase
@@ -85,7 +91,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
     Provider.of<ImagesProvider>(context, listen: false).addDone = false;
     Provider.of<ImagesProvider>(context, listen: false).addLoading = false;
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const ImagesAddScreen()))
+        .push(MaterialPageRoute(builder: (context) => const AddImagesScreen()))
         .then((result) {
       if (context.mounted) {
         Provider.of<ImagesProvider>(context, listen: false).getImages();

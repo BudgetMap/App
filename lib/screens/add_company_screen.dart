@@ -1,48 +1,48 @@
-import 'package:budget_map/providers/suppliers_provider.dart';
+import 'package:budget_map/providers/company_provider.dart';
 import 'package:budget_map/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/supplier.dart';
+import '../models/company.dart';
 import '../widgets/appbar.dart';
 import '../widgets/save_delete_builder.dart';
 
-class SuppliersAddScreen extends StatefulWidget {
-  const SuppliersAddScreen({super.key, this.supplier});
+class AddCompanyScreen extends StatefulWidget {
+  const AddCompanyScreen({super.key, this.company});
 
-  final Supplier? supplier;
+  final Company? company;
 
   @override
-  State<SuppliersAddScreen> createState() => _SuppliersAddScreenState();
+  State<AddCompanyScreen> createState() => _AddCompanyScreenState();
 }
 
-class _SuppliersAddScreenState extends State<SuppliersAddScreen> {
+class _AddCompanyScreenState extends State<AddCompanyScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController info = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    if (widget.supplier != null) {
+    if (widget.company != null) {
       // name.text = widget.asset!.name;
       // originalAmount.text = widget.asset!.originalAmount.toString();
     }
   }
 
-  void saveSupplier({
+  void savecompany({
     required TextEditingController name,
     required TextEditingController info,
   }) {
-    Provider.of<SuppliersProvider>(context, listen: false)
-        .addSupplier(Supplier(name: name.text, info: info.text));
+    Provider.of<CompanyProvider>(context, listen: false)
+        .addCompany(Company(name: name.text, info: info.text));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Supplier'),
+        appBar: buildAppBar(context: context, title: 'company'),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<SuppliersProvider>(builder:
-            (BuildContext context, SuppliersProvider value, Widget? child) {
+        body: Consumer<CompanyProvider>(builder:
+            (BuildContext context, CompanyProvider value, Widget? child) {
           if (!value.addDone && !value.addLoading) {
             return Align(
                 alignment: Alignment.topCenter,
@@ -64,9 +64,9 @@ class _SuppliersAddScreenState extends State<SuppliersAddScreen> {
                               hintText: "info",
                             )),
                         buildSaveDeleteButtons(
-                            data: widget.supplier,
+                            data: widget.company,
                             saveFunction: () =>
-                                saveSupplier(name: name, info: info),
+                                savecompany(name: name, info: info),
                             deleteFunction: () {})
                       ],
                     )));

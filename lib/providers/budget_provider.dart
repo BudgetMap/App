@@ -1,21 +1,21 @@
-import 'package:budget_map/models/supplier.dart';
-import 'package:budget_map/services/suppliers_service.dart';
+import 'package:budget_map/models/budget.dart';
+import 'package:budget_map/services/budget_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class SuppliersProvider with ChangeNotifier {
-  late List<Supplier> data;
+class BudgetProvider with ChangeNotifier {
+  late List<Budget> data;
   bool getLoading = false;
   bool getDone = false;
 
   bool addLoading = false;
   bool addDone = false;
 
-  SuppliersService services = SuppliersService();
+  BudgetService services = BudgetService();
 
-  getSuppliers() async {
+  getBudgets() async {
     getLoading = true;
 
-    List<Map<String, dynamic>>? rawData = await services.getSuppliers();
+    List<Map<String, dynamic>>? rawData = await services.getBudget();
 
     if (rawData == null) {
       getLoading = false;
@@ -24,18 +24,18 @@ class SuppliersProvider with ChangeNotifier {
       return;
     }
 
-    data = rawData.map((json) => Supplier.fromJSON(json)).toList();
+    data = rawData.map((json) => Budget.fromJSON(json)).toList();
     getLoading = false;
     getDone = true;
     notifyListeners();
   }
 
-  void addSupplier(Supplier supplier) async {
+  void addBudget(Budget budget) async {
     addLoading = true;
     addDone = false;
     notifyListeners();
 
-    await services.addSupplier(supplier.toJson());
+    await services.addBudget(budget.toJson());
 
     addLoading = false;
     addDone = true;

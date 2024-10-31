@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:budget_map/models/image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:path/path.dart';
 
@@ -64,6 +64,8 @@ class ImagesProvider with ChangeNotifier {
   }
 
   void test() {
-    print("test");
+    if (kDebugMode) {
+      print("test");
+    }
   }
 }

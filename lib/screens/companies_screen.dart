@@ -1,23 +1,23 @@
-import 'package:budget_map/providers/suppliers_provider.dart';
-import 'package:budget_map/screens/suppliers_add_screen.dart';
+import 'package:budget_map/providers/company_provider.dart';
+import 'package:budget_map/screens/add_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/supplier.dart';
+import '../models/company.dart';
 import '../widgets/appbar.dart';
-import '../widgets/supplier_card.dart';
+import '../widgets/company_card.dart';
 
-class SuppliersScreen extends StatefulWidget {
-  const SuppliersScreen({super.key});
+class CompaniesScreen extends StatefulWidget {
+  const CompaniesScreen({super.key});
 
   @override
-  State<SuppliersScreen> createState() => _SuppliersScreenState();
+  State<CompaniesScreen> createState() => _CompaniesScreenState();
 }
 
-class _SuppliersScreenState extends State<SuppliersScreen> {
+class _CompaniesScreenState extends State<CompaniesScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<SuppliersProvider>(context, listen: false).getSuppliers();
+    Provider.of<CompanyProvider>(context, listen: false).getCompanies();
   }
 
   @override
@@ -26,16 +26,16 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
         floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.surfaceBright,
             onPressed: () =>
-                {addSupplierScreen(context: context, supplier: null)},
+                {addCompanyScreen(context: context, company: null)},
             child: Icon(
               Icons.add,
               color: Theme.of(context).colorScheme.onSurface,
             )),
-        appBar: buildAppBar(context: context, title: 'Suppliers'),
+        appBar: buildAppBar(context: context, title: 'Companies'),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<SuppliersProvider>(
+        body: Consumer<CompanyProvider>(
           builder:
-              (BuildContext context, SuppliersProvider value, Widget? child) {
+              (BuildContext context, CompanyProvider value, Widget? child) {
             if (value.getDone) {
               return Align(
                   alignment: Alignment.topCenter,
@@ -46,14 +46,14 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                           padding: const EdgeInsets.only(top: 10),
                           itemCount: value.data.length,
                           itemBuilder: (context, i) {
-                            return buildSupplierCard(
+                            return buildCompanyCard(
                                 context: context,
                                 value: value,
                                 i: i,
                                 onLongPressFunction: () {
-                                  addSupplierScreen(
+                                  addCompanyScreen(
                                       context: context,
-                                      supplier: value.data[i]);
+                                      company: value.data[i]);
                                 });
                           },
                           separatorBuilder: (BuildContext context, int index) {
@@ -66,16 +66,16 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
         ));
   }
 
-  void addSupplierScreen(
-      {required BuildContext context, required Supplier? supplier}) {
-    Provider.of<SuppliersProvider>(context, listen: false).addDone = false;
-    Provider.of<SuppliersProvider>(context, listen: false).addLoading = false;
+  void addCompanyScreen(
+      {required BuildContext context, required Company? company}) {
+    Provider.of<CompanyProvider>(context, listen: false).addDone = false;
+    Provider.of<CompanyProvider>(context, listen: false).addLoading = false;
     Navigator.of(context)
         .push(MaterialPageRoute(
-            builder: (context) => SuppliersAddScreen(supplier: supplier)))
+            builder: (context) => AddCompanyScreen(company: company)))
         .then((result) {
       if (context.mounted) {
-        Provider.of<SuppliersProvider>(context, listen: false).getSuppliers();
+        Provider.of<CompanyProvider>(context, listen: false).getCompanies();
       }
     });
   }

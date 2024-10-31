@@ -1,21 +1,21 @@
-import 'package:budget_map/models/asset.dart';
-import 'package:budget_map/services/assets_service.dart';
+import 'package:budget_map/models/company.dart';
+import 'package:budget_map/services/company_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class AssetsProvider with ChangeNotifier {
-  late List<Asset> data;
+class CompanyProvider with ChangeNotifier {
+  late List<Company> data;
   bool getLoading = false;
   bool getDone = false;
 
   bool addLoading = false;
   bool addDone = false;
 
-  AssetsService services = AssetsService();
+  CompanyService services = CompanyService();
 
-  getAssets() async {
+  getCompanies() async {
     getLoading = true;
 
-    List<Map<String, dynamic>>? rawData = await services.getAssets();
+    List<Map<String, dynamic>>? rawData = await services.getCompanies();
 
     if (rawData == null) {
       getLoading = false;
@@ -24,18 +24,18 @@ class AssetsProvider with ChangeNotifier {
       return;
     }
 
-    data = rawData.map((json) => Asset.fromJSON(json)).toList();
+    data = rawData.map((json) => Company.fromJSON(json)).toList();
     getLoading = false;
     getDone = true;
     notifyListeners();
   }
 
-  void addAsset(Asset asset) async {
+  void addCompany(Company company) async {
     addLoading = true;
     addDone = false;
     notifyListeners();
 
-    await services.addAsset(asset.toJson());
+    await services.addCompany(company.toJson());
 
     addLoading = false;
     addDone = true;

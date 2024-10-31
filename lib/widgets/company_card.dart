@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../providers/suppliers_provider.dart';
+import '../providers/company_provider.dart';
 
-GestureDetector buildSupplierCard(
+GestureDetector buildCompanyCard(
     {required BuildContext context,
-    required SuppliersProvider value,
+    required CompanyProvider value,
     required int i,
     required void Function() onLongPressFunction}) {
   return GestureDetector(

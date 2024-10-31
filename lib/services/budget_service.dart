@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SuppliersService {
-  Future<List<Map<String, dynamic>>?> getSuppliers() async {
+class BudgetService {
+  Future<List<Map<String, dynamic>>?> getBudget() async {
     try {
       List<Map<String, dynamic>> result =
-          await Supabase.instance.client.from('supplier').select();
+          await Supabase.instance.client.from('budget').select();
       return result;
     } catch (e) {
       if (kDebugMode) {
@@ -15,9 +15,9 @@ class SuppliersService {
     }
   }
 
-  addSupplier(Map<String, dynamic> json) async {
+  addBudget(Map<String, dynamic> json) async {
     try {
-      await Supabase.instance.client.from('supplier').insert(json);
+      await Supabase.instance.client.from('budget').insert(json);
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());

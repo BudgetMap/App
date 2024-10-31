@@ -57,7 +57,7 @@ class _DynamicProductsList extends State<DynamicProductsList> {
                                 style: TextStyle(color: Colors.green),
                               ),
                               Text(
-                                widget.list[index].priceInUSD.toString(),
+                                widget.list[index].oldPrice.toString(),
                                 style: standardTextStyle(context),
                               ),
                               const SizedBox(width: 10),
@@ -117,7 +117,9 @@ class _DynamicProductsList extends State<DynamicProductsList> {
                         OrderedProduct newOrderedProduct = OrderedProduct(
                             name: name.text,
                             amount: int.parse(amount.text),
-                            priceInUSD: int.parse(priceInUSD.text));
+                            oldPrice: int.parse(priceInUSD.text),
+                            newPrice: int.parse(priceInUSD.text),
+                            delivered: false);
                         setState(() {
                           widget.list.add(newOrderedProduct);
                           name.clear();

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../providers/assets_provider.dart';
+import '../providers/budget_provider.dart';
 
 NumberFormat numFormatter = NumberFormat.decimalPatternDigits(
   locale: 'en_us',
   decimalDigits: 0,
 );
 
-GestureDetector buildAssetCard(
+GestureDetector buildBudgetCard(
     {required BuildContext context,
-    required AssetsProvider value,
+    required BudgetProvider value,
     required int i,
     required void Function() onLongPressFunction}) {
   return GestureDetector(

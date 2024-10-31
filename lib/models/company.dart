@@ -1,13 +1,13 @@
-class Supplier {
+class Company {
   late int? id;
   late String name;
   late String info;
 
-  Supplier({this.id, required this.name, required this.info});
+  Company({this.id, required this.name, required this.info});
 
-  factory Supplier.fromJSON(Map<String, dynamic> json) => Supplier(
+  factory Company.fromJSON(Map<String, dynamic> json) => Company(
         id: json['id'],
-        name: json['name'],
+        name: json['company_name'],
         info: json['info'],
       );
 
@@ -15,12 +15,12 @@ class Supplier {
     if (id != null) {
       return {
         'id': id,
-        'name': name,
+        'company_name': name,
         'info': info,
       };
     } else {
       return {
-        'name': name,
+        'company_name': name,
         'info': info,
       };
     }
@@ -30,7 +30,7 @@ class Supplier {
   String toString() {
     return '''
       'id': $id,
-      'name': $name,
+      'company_name': $name,
       'info': $info,
     ''';
   }
