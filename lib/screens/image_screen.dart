@@ -1,5 +1,7 @@
+import 'package:budget_map/screens/photo_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../providers/Images_provider.dart';
@@ -46,16 +48,28 @@ class _ImagesScreenState extends State<ImagesScreen> {
                           itemBuilder: (context, i) {
                             print(value.data[i].url);
                             print(Supabase.instance.client.auth.headers);
-                            return CachedNetworkImage(
-                                imageUrl: value.data[i].url!,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) {
-                                  print(error);
-                                  return const Icon(Icons.error);
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PhotoViewScreen(imageUrl: value.data[i].url!),
+                                    ),
+                                  );
                                 },
-                                httpHeaders:
-                                    Supabase.instance.client.auth.headers);
+                                child: SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: CachedNetworkImage(
+                                        imageUrl: value.data[i].url!,
+                                        placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) {
+                                          print(error);
+                                          return const Icon(Icons.error);
+                                        },
+                                        httpHeaders: Supabase
+                                            .instance.client.auth.headers)));
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox(height: 3);
