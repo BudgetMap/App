@@ -22,7 +22,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Directionality(
+        textDirection: TextDirection.rtl,child:Scaffold(
         floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.surfaceBright,
             onPressed: () =>
@@ -31,7 +32,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               Icons.add,
               color: Theme.of(context).colorScheme.onSurface,
             )),
-        appBar: buildAppBar(context: context, title: 'Companies'),
+        appBar: buildAppBar(context: context, title: 'الشركات'),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<CompanyProvider>(
           builder:
@@ -63,7 +64,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               return const Center(child: CircularProgressIndicator());
             }
           },
-        ));
+        )));
   }
 
   void addCompanyScreen(

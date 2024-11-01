@@ -6,6 +6,7 @@ import 'package:budget_map/screens/menu_screen.dart';
 import 'package:budget_map/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -29,10 +30,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String titleFontFamily = 'IBM Plex Sans Arabic';
-    // String bodyFontFamily = "Lateef";
-    String titleFontFamily = 'Roboto';
-    String bodyFontFamily = "Open Sans";
+    String bodyFontFamily = 'Rubik';
+    String titleFontFamily = "Lateef";
+    // String titleFontFamily = 'Roboto';
+    // String bodyFontFamily = "Open Sans";
     TextTheme textTheme =
         createTextTheme(context, bodyFontFamily, titleFontFamily);
     MaterialTheme theme = MaterialTheme(textTheme);
@@ -45,13 +46,22 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ImagesProvider()),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: theme.light(),
-          darkTheme: theme.dark(),
-          themeMode: ThemeMode.system,
-          title: 'Budget Map',
-          home: const MenuScreen(),
-          ),
+        locale:  const Locale('ar') ,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ar')
+        ],
+        debugShowCheckedModeBanner: false,
+        theme: theme.light(),
+        darkTheme: theme.dark(),
+        themeMode: ThemeMode.system,
+        title: 'خريطة الموازنات',
+        home: const MenuScreen(),
+      ),
     );
   }
 }

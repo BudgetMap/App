@@ -50,7 +50,7 @@ GestureDetector buildCommitteeCard(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Date: ${DateFormat(dateFormat).format(value.data[i].date)}",
+                      "${DateFormat(dateFormat).format(value.data[i].date)}التاريخ: ",
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily: Theme.of(context)
@@ -61,7 +61,7 @@ GestureDetector buildCommitteeCard(
                               Theme.of(context).textTheme.bodyMedium?.fontSize),
                     ),
                     Text(
-                      "USD Exchange rate: ${value.data[i].exchangeRateUSD.toString()}",
+                      "${value.data[i].exchangeRateUSD.toString()}سعر الدولار: ",
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily: Theme.of(context)

@@ -1,10 +1,7 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CompanyService {
-
-
   Future<List<Map<String, dynamic>>?> getCompanies() async {
     try {
       List<Map<String, dynamic>> result =

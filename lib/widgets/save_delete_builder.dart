@@ -9,7 +9,7 @@ Builder buildSaveDeleteButtons(
     if (data == null) {
       return buildSmallOutlinedButton(
         context: context,
-        text: 'Save',
+        text: 'اضافة',
         onPress: saveFunction,
       );
     } else {
@@ -20,7 +20,7 @@ Builder buildSaveDeleteButtons(
             color: Theme.of(context).colorScheme.error,
             onColor: Theme.of(context).colorScheme.onError,
             context: context,
-            text: 'Delete',
+            text: 'حذف',
             onPress: () {
               // Todo
             },
@@ -29,7 +29,7 @@ Builder buildSaveDeleteButtons(
           Expanded(
               child: buildSmallOutlinedButton(
             context: context,
-            text: 'Save',
+            text: 'تعديل',
             onPress: () {
               // Todo
             },

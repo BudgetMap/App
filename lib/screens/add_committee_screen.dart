@@ -56,8 +56,9 @@ class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Committee'),
+    return Directionality(
+        textDirection: TextDirection.rtl,child:Scaffold(
+        appBar: buildAppBar(context: context, title: 'أضافة لجنة'),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<CommitteeProvider>(builder:
             (BuildContext context, CommitteeProvider value, Widget? child) {
@@ -72,7 +73,7 @@ class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Select Budget", style: primaryStyle(context)),
+                            Text("اختر الموازنة", style: primaryStyle(context)),
                             StatefulBuilder(
                               builder: (BuildContext context,
                                   void Function(void Function())
@@ -156,7 +157,7 @@ class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
                             const SizedBox(
                               height: 15,
                             ),
-                            Text("Select Date", style: primaryStyle(context)),
+                            Text("اختر التاريخ", style: primaryStyle(context)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -166,21 +167,21 @@ class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () => _selectDate(context),
-                                  child: const Text('Select date'),
+                                  child: const Text('اختر التاريخ'),
                                 ),
                               ],
                             ),
                             const SizedBox(
                               height: 15,
                             ),
-                            Text("USD Exchange Rate",
+                            Text("سعر الدولار",
                                 style: primaryStyle(context)),
                             const SizedBox(
                               height: 2,
                             ),
-                            buildTextField(
+                            buildTextField(context: context,
                                 controller: exchangeRate,
-                                hint: "USD Exchange Rate",
+                                hint: "سعر الدولار",
                                 numeric: true),
                             const SizedBox(
                               height: 15,
@@ -219,7 +220,7 @@ class _AddCommitteeScreenState extends State<AddCommitteeScreen> {
             });
           }
           return const Center(child: CircularProgressIndicator());
-        }));
+        })));
   }
 
   bool checkReady(CommitteeProvider value) {

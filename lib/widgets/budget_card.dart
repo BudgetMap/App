@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../providers/budget_provider.dart';
 
 NumberFormat numFormatter = NumberFormat.decimalPatternDigits(
-  locale: 'en_us',
+  locale: 'ar_eg',
   decimalDigits: 0,
 );
 
@@ -42,10 +42,25 @@ GestureDetector buildBudgetCard(
                   ],
                 ),
                 Row(
+                  children: [
+                    Text(
+                      "رقم البند: ${numFormatter.format(value.data[i].number)}",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontFamily: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.fontFamily,
+                          fontSize:
+                              Theme.of(context).textTheme.bodyMedium?.fontSize),
+                    )
+                  ],
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "T: ${numFormatter.format(value.data[i].originalAmount)}",
+                      "ج: ${numFormatter.format(value.data[i].originalAmount)}",
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily:
@@ -54,7 +69,7 @@ GestureDetector buildBudgetCard(
                               Theme.of(context).textTheme.bodySmall?.fontSize),
                     ),
                     Text(
-                      "C: ${numFormatter.format(value.data[i].consumedAmount)}",
+                      "م: ${numFormatter.format(value.data[i].consumedAmount)}",
                       style: TextStyle(
                           color: Colors.red,
                           fontFamily:
@@ -63,7 +78,7 @@ GestureDetector buildBudgetCard(
                               Theme.of(context).textTheme.bodySmall?.fontSize),
                     ),
                     Text(
-                      "R: ${numFormatter.format(value.data[i].originalAmount - value.data[i].consumedAmount)}",
+                      "ب: ${numFormatter.format(value.data[i].originalAmount - value.data[i].consumedAmount)}",
                       style: TextStyle(
                           color: Colors.green,
                           fontFamily:

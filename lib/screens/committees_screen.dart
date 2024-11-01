@@ -6,6 +6,7 @@ import '../models/committee.dart';
 import '../widgets/appbar.dart';
 import '../widgets/committee_card.dart';
 import 'add_committee_screen.dart';
+import 'dart:ui' as ui;
 
 class CommitteesScreen extends StatefulWidget {
   const CommitteesScreen({super.key});
@@ -28,43 +29,47 @@ class _CommitteesScreenState extends State<CommitteesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.surfaceBright,
-            onPressed: () => addCommitteeScreen(context: context, committee: null),
-            child: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.onSurface,
-            )),
-        appBar: buildAppBar(context: context, title: 'Committees'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<CommitteeProvider>(
-          builder:
-              (BuildContext context, CommitteeProvider value, Widget? child) {
-            if (value.getDone) {
-              return Center(
-                  child: SizedBox(
-                      width: MediaQuery.sizeOf(context).width - 20.0,
-                      child: ListView.separated(
-                          padding: const EdgeInsets.only(top: 10),
-                          itemCount: value.data.length,
-                          itemBuilder: (context, i) {
-                            return buildCommitteeCard(
-                                context: context,
-                                value: value,
-                                i: i,
-                                onLongPressFunction: () {
-                                  //Todo
-                                });
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 3);
-                          })));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ));
+    return Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: Scaffold(
+            floatingActionButton: FloatingActionButton(
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                onPressed: () =>
+                    addCommitteeScreen(context: context, committee: null),
+                child: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.onSurface,
+                )),
+            appBar: buildAppBar(context: context, title: 'اللجان'),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: Consumer<CommitteeProvider>(
+              builder: (BuildContext context, CommitteeProvider value,
+                  Widget? child) {
+                if (value.getDone) {
+                  return Center(
+                      child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width - 20.0,
+                          child: ListView.separated(
+                              padding: const EdgeInsets.only(top: 10),
+                              itemCount: value.data.length,
+                              itemBuilder: (context, i) {
+                                return buildCommitteeCard(
+                                    context: context,
+                                    value: value,
+                                    i: i,
+                                    onLongPressFunction: () {
+                                      //Todo
+                                    });
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(height: 3);
+                              })));
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            )));
   }
 
   void addCommitteeScreen(
@@ -76,8 +81,8 @@ class _CommitteesScreenState extends State<CommitteesScreen> {
     Provider.of<CommitteeProvider>(context, listen: false).getBudgetsLoading =
         false;
     Navigator.of(context)
-        .push(
-            MaterialPageRoute(builder: (context) => AddCommitteeScreen(committee: committee)))
+        .push(MaterialPageRoute(
+            builder: (context) => AddCommitteeScreen(committee: committee)))
         .then((result) {
       if (context.mounted) {
         Provider.of<CommitteeProvider>(context, listen: false).getCommittees();

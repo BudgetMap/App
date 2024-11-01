@@ -23,8 +23,8 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
   void initState() {
     super.initState();
     if (widget.company != null) {
-      // name.text = widget.asset!.name;
-      // originalAmount.text = widget.asset!.originalAmount.toString();
+      name.text = widget.company!.name;
+      info.text = widget.company!.info.toString();
     }
   }
 
@@ -38,8 +38,9 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: buildAppBar(context: context, title: 'company'),
+    return Directionality(
+        textDirection: TextDirection.rtl,child:Scaffold(
+        appBar: buildAppBar(context: context, title:  widget.company == null ? 'أضافة شركة' : 'تعديل شركة'),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<CompanyProvider>(builder:
             (BuildContext context, CompanyProvider value, Widget? child) {
@@ -53,7 +54,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                       // to apply margin in the main axis of the wrap
                       runSpacing: 20,
                       children: [
-                        buildTextField(controller: name, hint: "name"),
+                        buildTextField(context: context,controller: name, hint: "اسم الشركة"),
                         TextField(
                           minLines: 4,
                             keyboardType: TextInputType.multiline,
@@ -61,7 +62,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                             controller: info,
                             decoration: const InputDecoration(
                               filled: true,
-                              hintText: "info",
+                              hintText: "بيانات الشركة",
                             )),
                         buildSaveDeleteButtons(
                             data: widget.company,
@@ -79,6 +80,6 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
             });
           }
           return const Center(child: CircularProgressIndicator());
-        }));
+        })));
   }
 }

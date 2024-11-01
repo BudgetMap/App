@@ -6,9 +6,7 @@ import '../models/ordered_product.dart';
 class DynamicProductsList extends StatefulWidget {
   final List<OrderedProduct> list;
 
-
-  const DynamicProductsList(
-      {super.key, required this.list});
+  const DynamicProductsList({super.key, required this.list});
 
   @override
   State<StatefulWidget> createState() => _DynamicProductsList();
@@ -86,18 +84,24 @@ class _DynamicProductsList extends State<DynamicProductsList> {
                   Row(children: [
                     Expanded(
                         child: buildTextField(
-                            controller: name, hint: "Product Name"))
+                            context: context,
+                            controller: name,
+                            hint: "Product Name"))
                   ]),
                   const SizedBox(height: 10),
                   Row(children: [
                     Expanded(
                         child: buildTextField(
-                            controller: amount, hint: "Amount", numeric: true)),
+                            context: context,
+                            controller: amount,
+                            hint: "Amount",
+                            numeric: true)),
                     const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                         child: buildTextField(
+                            context: context,
                             controller: priceInUSD,
                             hint: "Price",
                             numeric: true)),

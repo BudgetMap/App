@@ -22,8 +22,9 @@ class CommitteeService {
 
   Future<List<Map<String, dynamic>>?> getCommittees() async {
     try {
-      List<Map<String, dynamic>> result =
-          await Supabase.instance.client.from('committee').select("*, budget(*)");
+      List<Map<String, dynamic>> result = await Supabase.instance.client
+          .from('committee')
+          .select("*, budget(*)");
       return result;
     } catch (e) {
       if (kDebugMode) {

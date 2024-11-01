@@ -14,9 +14,9 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   Map<String, Widget> options = {
-    'Budgets': const BudgetsScreen(),
-    'Companies': const CompaniesScreen(),
-    'Committees': const CommitteesScreen(),
+    'الموازنات': const BudgetsScreen(),
+    'الشركات': const CompaniesScreen(),
+    'اللجان': const CommitteesScreen(),
     // 'Images': const ImagesScreen()
   };
 
@@ -25,7 +25,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-            appBar: buildAppBar(context: context, title: 'Menu'),
+            appBar: buildAppBar(context: context, title: 'القائمة الرئيسية'),
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: Center(
                 child: SizedBox(

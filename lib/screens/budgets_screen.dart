@@ -22,7 +22,8 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Directionality(
+        textDirection: TextDirection.rtl,child: Scaffold(
         floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.surfaceBright,
             onPressed: () => addBudgetScreen(context: context, budget: null),
@@ -30,7 +31,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               Icons.add,
               color: Theme.of(context).colorScheme.onSurface,
             )),
-        appBar: buildAppBar(context: context, title: 'Budgets'),
+        appBar: buildAppBar(context: context, title: 'الموازنات'),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<BudgetProvider>(
           builder: (BuildContext context, BudgetProvider value, Widget? child) {
@@ -60,7 +61,7 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
           },
-        ));
+        )));
   }
 
   void addBudgetScreen({required BuildContext context, required Budget? budget}) {

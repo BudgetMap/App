@@ -8,7 +8,6 @@ import '../providers/Images_provider.dart';
 import '../widgets/appbar.dart';
 import 'images_add_screen.dart';
 
-
 class ImagesScreen extends StatefulWidget {
   const ImagesScreen({super.key});
 
@@ -25,66 +24,70 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.surfaceBright,
-            onPressed: () => addImageScreen(context: context),
-            child: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.onSurface,
-            )),
-        appBar: buildAppBar(context: context, title: 'Images'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<ImagesProvider>(
-          builder: (BuildContext context, ImagesProvider value, Widget? child) {
-            if (value.getDone) {
-              return Align(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                      width: MediaQuery.sizeOf(context).width - 20.0,
-                      child: ListView.separated(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(top: 10),
-                          itemCount: value.data.length,
-                          itemBuilder: (context, i) {
-
-                            if (kDebugMode) {
-                              print(value.data[i].url);
-                              print(Supabase.instance.client.auth.headers);
-                            }
-                            return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PhotoViewScreen(imageUrl: value.data[i].url!),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: CachedNetworkImage(
-                                        imageUrl: value.data[i].url!,
-                                        placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) {
-                                          if (kDebugMode) {
-                                            print(error);
-                                          }
-                                          return const Icon(Icons.error);
-                                        },
-                                        httpHeaders: Supabase
-                                            .instance.client.auth.headers)));
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 3);
-                          })));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ));
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+            floatingActionButton: FloatingActionButton(
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                onPressed: () => addImageScreen(context: context),
+                child: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.onSurface,
+                )),
+            appBar: buildAppBar(context: context, title: 'الصور'),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: Consumer<ImagesProvider>(
+              builder:
+                  (BuildContext context, ImagesProvider value, Widget? child) {
+                if (value.getDone) {
+                  return Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width - 20.0,
+                          child: ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(top: 10),
+                              itemCount: value.data.length,
+                              itemBuilder: (context, i) {
+                                if (kDebugMode) {
+                                  print(value.data[i].url);
+                                  print(Supabase.instance.client.auth.headers);
+                                }
+                                return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PhotoViewScreen(
+                                              imageUrl: value.data[i].url!),
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: CachedNetworkImage(
+                                            imageUrl: value.data[i].url!,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(),
+                                            errorWidget: (context, url, error) {
+                                              if (kDebugMode) {
+                                                print(error);
+                                              }
+                                              return const Icon(Icons.error);
+                                            },
+                                            httpHeaders: Supabase.instance
+                                                .client.auth.headers)));
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(height: 3);
+                              })));
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            )));
   }
 
   void addImageScreen({required BuildContext context}) {

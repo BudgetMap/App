@@ -28,8 +28,7 @@ class OrderedProduct {
       delivered: json['delivered'] as bool);
 
   @override
-  String toString() =>
-      '''
+  String toString() => '''
       'name': $name,
       'amount': $amount,
       'old_price': $oldPrice,

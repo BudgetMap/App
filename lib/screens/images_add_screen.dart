@@ -18,49 +18,53 @@ class _AddImagesScreenState extends State<AddImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: buildAppBar(context: context, title: 'Add Image'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<ImagesProvider>(
-          builder: (BuildContext context, ImagesProvider value, Widget? child) {
-            if (!value.addDone && !value.addLoading) {
-              return Column(children: [
-                StatefulBuilder(builder: (BuildContext context,
-                    void Function(void Function()) internalSetState) {
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+            appBar: buildAppBar(context: context, title: 'أضف صورة'),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: Consumer<ImagesProvider>(
+              builder:
+                  (BuildContext context, ImagesProvider value, Widget? child) {
+                if (!value.addDone && !value.addLoading) {
                   return Column(children: [
-                    _selectedImage != null
-                        ? Image.file(_selectedImage!)
-                        : const Text('No Image Selected'),
+                    StatefulBuilder(builder: (BuildContext context,
+                        void Function(void Function()) internalSetState) {
+                      return Column(children: [
+                        _selectedImage != null
+                            ? Image.file(_selectedImage!)
+                            : const Text('لم يتم اختيار صورة'),
+                        ElevatedButton(
+                            onPressed: () async {
+                              final pickedFile = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              if (pickedFile != null) {
+                                internalSetState(() {
+                                  _selectedImage = File(pickedFile.path);
+                                });
+                              }
+                            },
+                            child: const Icon(Icons.add)),
+                      ]);
+                    }),
                     ElevatedButton(
-                        onPressed: () async {
-                          final pickedFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          if (pickedFile != null) {
-                            internalSetState(() {
-                              _selectedImage = File(pickedFile.path);
-                            });
-                          }
+                        onPressed: () {
+                          Provider.of<ImagesProvider>(context, listen: false)
+                              .addImage(
+                                  ImageModel(name: "test1"), _selectedImage!);
                         },
-                        child: const Icon(Icons.add)),
+                        child: const Text("أضافة"))
                   ]);
-                }),
-                ElevatedButton(
-                    onPressed: () {
-                      Provider.of<ImagesProvider>(context, listen: false)
-                          .addImage(ImageModel(name: "test1"), _selectedImage!);
-                    },
-                    child: const Text("Add"))
-              ]);
-            } else {
-              value.addDone = false;
-              Future.microtask(() {
-                if (context.mounted) {
-                  Navigator.pop(context);
+                } else {
+                  value.addDone = false;
+                  Future.microtask(() {
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  });
                 }
-              });
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
-        ));
+                return const Center(child: CircularProgressIndicator());
+              },
+            )));
   }
 }

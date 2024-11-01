@@ -19,6 +19,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController originalAmount = TextEditingController();
   TextEditingController consumedAmount = TextEditingController();
+  TextEditingController number = TextEditingController();
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
       name.text = widget.budget!.name;
       originalAmount.text = widget.budget!.originalAmount.toString();
       consumedAmount.text = widget.budget!.consumedAmount.toString();
+      number.text = widget.budget!.consumedAmount.toString();
     }
   }
 
@@ -34,57 +36,73 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
     required TextEditingController name,
     required TextEditingController originalAmount,
     required TextEditingController consumedAmount,
+    required TextEditingController number,
   }) {
     Provider.of<BudgetProvider>(context, listen: false).addBudget(Budget(
         name: name.text,
         originalAmount: int.parse(originalAmount.text),
-        consumedAmount: int.parse(consumedAmount.text), number: 0));
+        consumedAmount: int.parse(consumedAmount.text),
+        number: int.parse(number.text)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: buildAppBar(context: context, title: 'budget'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Consumer<BudgetProvider>(builder:
-            (BuildContext context, BudgetProvider value, Widget? child) {
-          if (!value.addDone && !value.addLoading) {
-            return Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 40.0,
-                    child: Wrap(
-                      spacing: 20,
-                      // to apply margin in the main axis of the wrap
-                      runSpacing: 20,
-                      children: [
-                        buildTextField(controller: name, hint: "name"),
-                        buildTextField(
-                            controller: originalAmount,
-                            hint: "Original Amount",
-                            numeric: true),
-                        buildTextField(
-                            controller: consumedAmount,
-                            hint: "Consumed Amount",
-                            numeric: true),
-                        buildSaveDeleteButtons(
-                            data: widget.budget,
-                            saveFunction: () => savebudget(
-                                name: name,
-                                originalAmount: originalAmount,
-                                consumedAmount: consumedAmount),
-                            deleteFunction: () {})
-                      ],
-                    )));
-          } else if (value.addDone) {
-            value.addDone = false;
-            Future.microtask(() {
-              if (context.mounted) {
-                Navigator.pop(context);
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+            appBar: buildAppBar(
+                context: context,
+                title: widget.budget == null ? 'أضافة موازنة' : 'تعديل موازنة'),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: Consumer<BudgetProvider>(builder:
+                (BuildContext context, BudgetProvider value, Widget? child) {
+              if (!value.addDone && !value.addLoading) {
+                return Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width - 40.0,
+                        child: Wrap(
+                          spacing: 20,
+                          runSpacing: 20,
+                          children: [
+                            buildTextField(
+                                context: context,
+                                controller: name,
+                                hint: "اسم موازنة"),
+                            buildTextField(
+                                context: context,
+                                controller: number,
+                                hint: "رقم البند",
+                                numeric: true),
+                            buildTextField(
+                                context: context,
+                                controller: originalAmount,
+                                hint: "القيمة الأصلية",
+                                numeric: true),
+                            buildTextField(
+                                context: context,
+                                controller: consumedAmount,
+                                hint: "القيمة المستهلكة",
+                                numeric: true),
+                            buildSaveDeleteButtons(
+                                data: widget.budget,
+                                saveFunction: () => savebudget(
+                                    name: name,
+                                    originalAmount: originalAmount,
+                                    consumedAmount: consumedAmount,
+                                    number: number),
+                                deleteFunction: () {})
+                          ],
+                        )));
+              } else if (value.addDone) {
+                value.addDone = false;
+                Future.microtask(() {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                });
               }
-            });
-          }
-          return const Center(child: CircularProgressIndicator());
-        }));
+              return const Center(child: CircularProgressIndicator());
+            })));
   }
 }

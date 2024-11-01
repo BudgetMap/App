@@ -8,7 +8,6 @@ import 'package:path/path.dart';
 
 import '../services/images_service.dart';
 
-
 class ImagesProvider with ChangeNotifier {
   late List<ImageModel> data;
   bool addLoading = false;
@@ -19,12 +18,12 @@ class ImagesProvider with ChangeNotifier {
 
   ImagesService services = ImagesService();
 
-  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
 
   void addImage(ImageModel image, File imageFile) async {
     addLoading = true;
