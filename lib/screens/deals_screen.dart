@@ -1,24 +1,24 @@
 import 'package:budget_map/providers/committee_provider.dart';
+import 'package:budget_map/providers/deal_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/committee.dart';
-import '../providers/deal_provider.dart';
 import '../widgets/appbar.dart';
 import '../widgets/committee_card.dart';
 import 'add_committee_screen.dart';
 import 'dart:ui' as ui;
 
-import 'deals_screen.dart';
+class DealsScreen extends StatefulWidget {
+  const DealsScreen({super.key,required this.committee});
 
-class CommitteesScreen extends StatefulWidget {
-  const CommitteesScreen({super.key});
+  final Committee? committee;
 
   @override
-  State<CommitteesScreen> createState() => _CommitteesScreenState();
+  State<DealsScreen> createState() => _DealsScreenState();
 }
 
-class _CommitteesScreenState extends State<CommitteesScreen> {
+class _DealsScreenState extends State<DealsScreen> {
   @override
   void initState() {
     super.initState();
@@ -64,15 +64,8 @@ class _CommitteesScreenState extends State<CommitteesScreen> {
                                       addCommitteeScreen(context: context, committee: value.data[i]);
                                     },
                                     onTapFunction: () {
-                                      Provider.of<DealProvider>(context, listen: false).addDone = false;
-                                      Provider.of<DealProvider>(context, listen: false).addLoading = false;
-                                      Provider.of<DealProvider>(context, listen: false).getCompaniesLoading =
-                                      false;
-                                      Provider.of<DealProvider>(context, listen: false).getCompaniesDone =
-                                      false;
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                          builder: (context) => DealsScreen(committee: value.data[i])));
+
+
                                     });
                               },
                               separatorBuilder:
@@ -91,12 +84,12 @@ class _CommitteesScreenState extends State<CommitteesScreen> {
     Provider.of<CommitteeProvider>(context, listen: false).addDone = false;
     Provider.of<CommitteeProvider>(context, listen: false).addLoading = false;
     Provider.of<CommitteeProvider>(context, listen: false).getBudgetsDone =
-        false;
+    false;
     Provider.of<CommitteeProvider>(context, listen: false).getBudgetsLoading =
-        false;
+    false;
     Navigator.of(context)
         .push(MaterialPageRoute(
-            builder: (context) => AddCommitteeScreen(committee: committee)))
+        builder: (context) => AddCommitteeScreen(committee: committee)))
         .then((result) {
       if (context.mounted) {
         Provider.of<CommitteeProvider>(context, listen: false).getCommittees();
