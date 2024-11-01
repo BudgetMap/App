@@ -12,6 +12,7 @@ class Committee {
   late double exchangeRateUSD;
   late String? imageURL;
   late String? imagePath;
+  late int? total;
 
   static const String dateFormat = "yyyy-MM-dd";
 
@@ -23,7 +24,8 @@ class Committee {
       required this.exchangeRateUSD,
       this.imageURL,
       this.imagePath,
-      this.budget});
+      this.budget,
+      this.total});
 
   factory Committee.fromJSON(Map<String, dynamic> json) => Committee(
       id: json['id'],
@@ -32,7 +34,9 @@ class Committee {
       date: DateFormat(dateFormat).parse(json['committee_date']),
       exchangeRateUSD: (json['usd_exchange_rate'] as int).toDouble(),
       imageURL: json['committee_image_url'],
-      imagePath: json['committee_image_path']);
+      imagePath: json['committee_image_path'],
+      total: json['sum'],
+      budget: Budget.fromJSON(json['budget']));
 
   static List<OrderedProduct> decodeProductsList(String json) =>
       (jsonDecode(json) as List)
@@ -72,6 +76,7 @@ class Committee {
     'usd_exchange_rate': $exchangeRateUSD,
     'committee_image_url': $imageURL,
     'committee_image_path': $imagePath,
+    'sum': $total,
     ''';
   }
 

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../providers/Images_provider.dart';
 import '../widgets/appbar.dart';
-import 'images_add_screen.dart';
+import 'add_image_screen.dart';
 
 class ImagesScreen extends StatefulWidget {
   const ImagesScreen({super.key});
@@ -94,7 +94,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
     Provider.of<ImagesProvider>(context, listen: false).addDone = false;
     Provider.of<ImagesProvider>(context, listen: false).addLoading = false;
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const AddImagesScreen()))
+        .push(MaterialPageRoute(builder: (context) => const AddImageScreen()))
         .then((result) {
       if (context.mounted) {
         Provider.of<ImagesProvider>(context, listen: false).getImages();

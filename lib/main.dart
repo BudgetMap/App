@@ -32,8 +32,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     String bodyFontFamily = 'Rubik';
     String titleFontFamily = "Lateef";
-    // String titleFontFamily = 'Roboto';
-    // String bodyFontFamily = "Open Sans";
     TextTheme textTheme =
         createTextTheme(context, bodyFontFamily, titleFontFamily);
     MaterialTheme theme = MaterialTheme(textTheme);

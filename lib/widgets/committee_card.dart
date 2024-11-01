@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../providers/committee_provider.dart';
+import '../screens/photo_view_screen.dart';
 
 const String dateFormat = "yyyy-MM-dd";
 
@@ -14,9 +18,11 @@ GestureDetector buildCommitteeCard(
     {required BuildContext context,
     required CommitteeProvider value,
     required int i,
-    required void Function() onLongPressFunction}) {
+    required void Function() onLongPressFunction,
+    required void Function() onTapFunction}) {
   return GestureDetector(
       onLongPress: onLongPressFunction,
+      onTap: onTapFunction,
       child: Card(
           margin: const EdgeInsets.all(10),
           shape: RoundedRectangleBorder(
@@ -31,7 +37,25 @@ GestureDetector buildCommitteeCard(
                 Row(
                   children: [
                     Text(
-                      value.data[i].id.toString(),
+                      "رقم اللجنة: ${value.data[i].number.toString()}",
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontFamily: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontFamily,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontSize),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "بند الموازنة: ${value.data[i].budget?.name.toString()}",
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -50,7 +74,7 @@ GestureDetector buildCommitteeCard(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${DateFormat(dateFormat).format(value.data[i].date)}التاريخ: ",
+                      "التاريخ: ${DateFormat(dateFormat).format(value.data[i].date)}",
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily: Theme.of(context)
@@ -61,7 +85,7 @@ GestureDetector buildCommitteeCard(
                               Theme.of(context).textTheme.bodyMedium?.fontSize),
                     ),
                     Text(
-                      "${value.data[i].exchangeRateUSD.toString()}سعر الدولار: ",
+                      "سعر الدولار: ${value.data[i].exchangeRateUSD.toString()}",
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily: Theme.of(context)
@@ -73,6 +97,49 @@ GestureDetector buildCommitteeCard(
                     ),
                   ],
                 ),
+                Row(
+                  children: [
+                    Text(
+                      "الاجمالى: ${value.data[i].total.toString()}",
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontFamily: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontFamily,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontSize),
+                    )
+                  ],
+                ),
+                if (value.data[i].imageURL != null)
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PhotoViewScreen(
+                                  imageUrl: value.data[i].imageURL!),
+                            ),
+                          );
+                        },
+                        child: CachedNetworkImage(
+                            width: MediaQuery.of(context).size.width - 100,
+                            imageUrl: value.data[i].imageURL!,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) {
+                              if (kDebugMode) {
+                                print(error);
+                              }
+                              return const Icon(Icons.error);
+                            },
+                            httpHeaders: Supabase.instance.client.auth.headers))
+                  ])
                 // const SizedBox(width: 10),
                 // Text(
                 //   "Main Products",

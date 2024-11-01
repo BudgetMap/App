@@ -31,7 +31,7 @@ class CommitteeProvider with ChangeNotifier {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
-  void addImage(Committee committee, File imageFile) async {
+  addImage(Committee committee, File imageFile) async {
     String filePath =
         "image/${getRandomString(15)}.${(basename(imageFile.path).split('.') as List).last}";
     await services.uploadImage(imageFile, filePath);
@@ -59,11 +59,12 @@ class CommitteeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addCommittee(Committee committee) async {
+  void addCommittee(Committee committee, File? selectedImage) async {
     addLoading = true;
     addDone = false;
     notifyListeners();
 
+    await addImage(committee, selectedImage!);
     await services.addCommittee(committee.toJson());
 
     addLoading = false;

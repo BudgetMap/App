@@ -58,6 +58,9 @@ class _CommitteesScreenState extends State<CommitteesScreen> {
                                     value: value,
                                     i: i,
                                     onLongPressFunction: () {
+                                      addCommitteeScreen(context: context, committee: value.data[i]);
+                                    },
+                                    onTapFunction: () {
                                       //Todo
                                     });
                               },

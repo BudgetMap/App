@@ -10,7 +10,9 @@ TextField buildTextField(
     return TextField(
       controller: controller,
       decoration: InputDecoration(
+          border: const OutlineInputBorder(),
           filled: true,
+          fillColor: Theme.of(context).colorScheme.surfaceContainerHigh,
           hintText: hint,
           hintStyle: TextStyle(
               fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
@@ -24,7 +26,9 @@ TextField buildTextField(
         FilteringTextInputFormatter.digitsOnly
       ],
       decoration: InputDecoration(
+          border: const OutlineInputBorder(),
           filled: true,
+          fillColor: Theme.of(context).colorScheme.surfaceContainerHigh,
           hintText: hint,
           hintStyle: TextStyle(
               fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,

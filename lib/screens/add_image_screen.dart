@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 import '../providers/Images_provider.dart';
 import '../widgets/appbar.dart';
 
-class AddImagesScreen extends StatefulWidget {
-  const AddImagesScreen({super.key});
+class AddImageScreen extends StatefulWidget {
+  const AddImageScreen({super.key});
 
   @override
-  State<AddImagesScreen> createState() => _AddImagesScreenState();
+  State<AddImageScreen> createState() => _AddImageScreenState();
 }
 
-class _AddImagesScreenState extends State<AddImagesScreen> {
+class _AddImageScreenState extends State<AddImageScreen> {
   File? _selectedImage;
 
   @override

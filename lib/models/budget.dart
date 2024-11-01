@@ -19,6 +19,7 @@ class Budget {
       consumedAmount: json['consumed_amount'],
       number: json['budget_number']);
 
+
   Map<String, dynamic> toJson() {
     if (id != null) {
       return {
@@ -48,4 +49,12 @@ class Budget {
     'budget_number': $number
     ''';
   }
+
+  @override
+  // ignore: non_nullable_equals_parameter, hash_and_equals
+  bool operator ==(dynamic other) =>
+      other != null && other is Budget && name == other.name;
+
+
+
 }
